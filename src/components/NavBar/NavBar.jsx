@@ -34,12 +34,18 @@ const NavBar = () => {
               color="inherit"
               edge="start"
               sx={{ outline: 'none' }}
-              onClick={() => ''}
+              onClick={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
               className={classes.menuButton}
             >
               <Menu />
             </IconButton>
           )}
+          <IconButton
+            color="inherit"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            <Menu />
+          </IconButton>
           <IconButton color="inherit" sx={{ ml: 1 }} onClick={() => {}}>
             {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
@@ -91,6 +97,15 @@ const NavBar = () => {
               <Sidebar setMobileOpen={setMobileOpen} />
             </Drawer>
           )}
+          {/* <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            ModalProps={{ keepMounted: true }}
+            classes={{ paper: classes.drawerPaper }}
+            onClose={() => setMobileOpen(!mobileOpen)}
+          >
+            <Sidebar />
+          </Drawer> */}
         </nav>
       </div>
     </>
