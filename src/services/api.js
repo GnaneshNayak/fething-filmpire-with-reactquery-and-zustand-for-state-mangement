@@ -1,20 +1,21 @@
 import axios from 'axios';
-
-const page = 1;
-const tmdbApiKEY = import.meta.env.VITE_REACT_APP_TMDB_KEY;
-
-const fetchAxiosResponse = axios.create({
+const apiKey = import.meta.env.VITE_REACT_APP_TMDB_KEY;
+const fetchResponse = axios.create({
   baseURL: 'https://api.themoviedb.org/3',
   params: {
-    api_key: tmdbApiKEY,
+    api_key: apiKey,
   },
 });
 
 class APIClient {
-  getAll = () => {
-    return fetchAxiosResponse
-      .get(`/movie/popular?page=${page}`)
-      .then((res) => res.data);
+  constructor(endpoint) {
+    this.endpoint = endpoint;
+  }
+  getMovies = (config) => {
+    return fetchResponse.get(this.endpoint, config).then((res) => res.data);
+  };
+  getGenres = () => {
+    return fetchResponse.get(`${this.endpoint}`).then((res) => res.data);
   };
 }
 

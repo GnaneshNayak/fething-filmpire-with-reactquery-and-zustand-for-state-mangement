@@ -10,21 +10,24 @@ import {
   ListItemText,
   ListSubheader,
 } from '@mui/material';
-import { useGetGenresQuery } from '../../services/TMDB';
+
 import genreIcon from '../../assets/genres';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectGenreOrCategory } from '../../Fetures/currentGenreOrCategory';
-// import { selectGenreOrCategory } from '../../Fetures/currentGenreOrCategory';
+import useGenres from '../../hooks/useGenres';
+import useStore from '../../app/store';
+// import useQueryStore from '../../app/store';
 
 const Sidebar = ({ setMobileOpen }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const dispatch = useDispatch();
+  const { data, isFetching } = useGenres();
+  const initialState = useStore((s) => s.intialState);
+  const setGenreID = useStore((s) => s.setGenreID);
+  const setCategoryName = useStore((s) => s.setCategoryName);
 
-  const { data, isFetching } = useGetGenresQuery();
-  // console.log('from ' + genreId);
+  console.log(initialState);
 
   if (isFetching) return <Box>'loading......'</Box>;
+  // console.log(data);
 
   const categories = [
     { label: 'Popular', value: 'popular' },
@@ -57,7 +60,11 @@ const Sidebar = ({ setMobileOpen }) => {
         <ListSubheader>Categories</ListSubheader>
         {categories.map(({ label, value }) => (
           <Link key={value} to="/" className={classes.links}>
-            <ListItem onClick={() => dispatch(selectGenreOrCategory(value))}>
+            <ListItem
+              onClick={() => {
+                setCategoryName(value);
+              }}
+            >
               <ListItemIcon>
                 <img
                   src={genreIcon[label.toLowerCase()]}
@@ -75,7 +82,7 @@ const Sidebar = ({ setMobileOpen }) => {
         <ListSubheader>Genre</ListSubheader>
         {data.genres.map(({ id, name }) => (
           <Link key={id} to="/" className={classes.links}>
-            <ListItem onClick={() => dispatch(selectGenreOrCategory(id))}>
+            <ListItem onClick={() => setGenreID(id)}>
               <ListItemIcon>
                 <img
                   src={genreIcon[name.toLowerCase()]}

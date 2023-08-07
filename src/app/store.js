@@ -1,23 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { tmdbApi } from '../services/TMDB';
-import genreOrCategoryReducer from '../Fetures/currentGenreOrCategory';
+import { create } from 'zustand';
 
-export const store = configureStore({
-  reducer: {
-    [tmdbApi.reducerPath]: tmdbApi.reducer,
-    selectGenreOrCategoryStore: genreOrCategoryReducer,
+const useStore = create((set) => ({
+  intialState: {
+    genreID: '',
+    categoryName: '',
+    searchInput: '',
   },
-  middleware: (getDefault) => getDefault().concat(tmdbApi.middleware),
-});
+  setGenreID: (genreID) => set((store) => ({ intialState: { genreID } })),
+  setCategoryName: (categoryName) =>
+    set((store) => ({ intialState: { categoryName } })),
+  setSearchInput: (searchInput) =>
+    set(() => ({ intialState: { searchInput } })),
+}));
 
-// import { configureStore } from '@reduxjs/toolkit';
-// import { tmdbApi } from '../services/TMDB';
-// import genreOrCategoryReducer from '../Fetures/currentGenreOrCategory';
-
-// export const store = configureStore({
-//   reducer: {
-//     [tmdbApi.reducerPath]: tmdbApi.reducer,
-//     selectGenreOrCategoryStore: genreOrCategoryReducer,
-//   },
-//   middleware: (getDefault) => getDefault().concat(tmdbApi.middleware),
-// });
+export default useStore;
